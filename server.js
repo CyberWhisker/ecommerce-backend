@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 
 // File Route Location
 const UserRoutes = require('./routes/user')
+const TechStackRoutes = require('./routes/techStack')
 
 const port = process.env.PORT
 
@@ -25,6 +26,7 @@ app.use(express.json())
 
 // Routes
 app.use('/api/user', UserRoutes)
+app.use('/api/techStack', TechStackRoutes)
 
 // Connect to db
 mongoose.connect(process.env.MONGO_URI)
