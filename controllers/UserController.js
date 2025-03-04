@@ -1,4 +1,5 @@
 const Model = require('../models/UserModel')
+const bcrypt = require('bcrypt')
 
 const login = async (req, res) => {
     const { email, password } = req.body
@@ -19,6 +20,40 @@ const register = async (req, res) => {
         res.status(400).json({ error: error.message })
     }
 }
+
+const updateData = async (req, res) => {
+    const { id } = req.params;
+    const { password, ...rest } = req.body;
+    let updateFields = rest;
+
+    try {
+        if (password) {
+            const salt = await bcrypt.genSalt(10);
+            const hash = await bcrypt.hash(password, salt);
+            updateFields.password = hash;
+        }
+
+        if (req.file) {
+            updateFields.picture = `/profileImg/${req.file.filename}`
+        }
+
+        const user = await Model.findByIdAndUpdate(id, updateFields, { new: true });
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+const deleteData = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const user = await Model.findByIdAndDelete({ _id: id });
+        console.log(user)
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
 
 const usingGoogle = async (req, res) => {
     const { email } = req.body;
@@ -48,6 +83,7 @@ const usingGoogle = async (req, res) => {
             // Return the existing user's details
             return res.status(200).json({
                 _id: user._id,
+                name: user.name,
                 email: user.email,
                 role: user.role,
                 picture: user.picture,
@@ -63,8 +99,8 @@ const usingGoogle = async (req, res) => {
 // Get All Users
 const getData = async (req, res) => {
     try {
-        const data = await Model.loginHash(email, password)
-        res.status(200).json({ _id: data._id, email: data.email, role: data.role, picture: data.picture, verified: data.verified })
+        const data = await Model.find()
+        res.status(200).json(data)
     } catch (error) {
         res.status(400).json({ error: error.message })
     }
@@ -74,5 +110,7 @@ module.exports = {
     getData,
     login,
     register,
-    usingGoogle
+    usingGoogle,
+    updateData,
+    deleteData
 };
