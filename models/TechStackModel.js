@@ -10,7 +10,6 @@ const TechStackSchema = new Schema({
     description: {
         type: String,
         required: true,
-        unique: true
     },
     image: {
         type: String,
