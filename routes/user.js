@@ -1,7 +1,7 @@
 // routes/user.js
 const express = require('express');
 const multer = require('multer')
-const { getData, login, register, usingGoogle, updateData, deleteData } = require('../controllers/UserController');
+const { getData, login, register, usingGoogle, updateData, deleteData, verifyEmail, requestResetPassword, confirmResetPassword } = require('../controllers/UserController');
 const router = express.Router();
 
 // Multer Setup
@@ -29,5 +29,14 @@ router.post('/login', login);
 router.post('/register', register);
 
 router.post('/usingGoogle', usingGoogle);
+
+
+// Verify Email
+router.get('/verify', verifyEmail);
+
+// Recovery
+router.post('/requestResetPassword', requestResetPassword);
+
+router.post('/confirm-reset-password', confirmResetPassword);
 
 module.exports = router;
