@@ -8,6 +8,8 @@ const UserRoutes = require('./routes/user')
 const TechStackRoutes = require('./routes/techStack')
 const InventoryRoutes = require('./routes/inventory')
 const ProjectRoutes = require('./routes/project')
+const TransactionRoutes = require('./routes/transaction')
+const OrderRoutes = require('./routes/order')
 
 const port = process.env.PORT
 
@@ -31,6 +33,8 @@ app.use('/api/user', UserRoutes)
 app.use('/api/techStack', TechStackRoutes)
 app.use('/api/inventory', InventoryRoutes)
 app.use('/api/project', ProjectRoutes)
+app.use('/api/transaction', TransactionRoutes)
+app.use('/api/order', OrderRoutes)
 
 // Connect to db
 mongoose.connect(process.env.MONGO_URI)
