@@ -1,8 +1,13 @@
-const Model = require('../models/OrderModel')
+const Model = require('../models/ExperienceModel')
 
 const storeData = async (req, res) => {
+    const { ...rest } = req.body
+    let newData = rest;
     try {
-        const data = await Model.create(req.body)
+        if (req.file) {
+            newData.image = `/experienceImg/${req.file.filename}`
+        }
+        const data = await Model.create(newData)
         res.status(200).json(data)
     } catch (error) {
         console.log(error)
@@ -12,8 +17,13 @@ const storeData = async (req, res) => {
 
 const updateData = async (req, res) => {
     const { id } = req.params
+    const { ...rest } = req.body
+    let newData = rest;
     try {
-        const data = await Model.findByIdAndUpdate(id, req.body)
+        if (req.file) {
+            newData.image = `/experienceImg/${req.file.filename}`
+        }
+        const data = await Model.findByIdAndUpdate(id, newData)
         res.status(200).json(data)
     } catch (error) {
         res.status(400).json({ error: error.message })
@@ -33,7 +43,7 @@ const deleteData = async (req, res) => {
 // Get All Users
 const getData = async (req, res) => {
     try {
-        const data = await Model.find()
+        const data = await Model.find().sort({ startDate: -1 })
         res.status(200).json(data)
     } catch (error) {
         res.status(400).json({ error: error.message })

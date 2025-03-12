@@ -6,10 +6,8 @@ const mongoose = require('mongoose')
 // File Route Location
 const UserRoutes = require('./routes/user')
 const TechStackRoutes = require('./routes/techStack')
-const InventoryRoutes = require('./routes/inventory')
 const ProjectRoutes = require('./routes/project')
-const TransactionRoutes = require('./routes/transaction')
-const OrderRoutes = require('./routes/order')
+const ExperienceRoutes = require('./routes/experience')
 
 const port = process.env.PORT
 
@@ -31,10 +29,8 @@ app.use(express.json())
 // Routes
 app.use('/api/user', UserRoutes)
 app.use('/api/techStack', TechStackRoutes)
-app.use('/api/inventory', InventoryRoutes)
 app.use('/api/project', ProjectRoutes)
-app.use('/api/transaction', TransactionRoutes)
-app.use('/api/order', OrderRoutes)
+app.use('/api/experience', ExperienceRoutes)
 
 // Connect to db
 mongoose.connect(process.env.MONGO_URI)
